@@ -1,0 +1,40 @@
+# Target LLM Application Configuration
+target:
+  name: "Course FAQ RAG Chatbot"
+  description: "A Retrieval-Augmented Generation chatbot that answers course-related questions from a SQLite FAQ database using keyword/text search and Gemini/Gemma."
+  type: "RAG"
+  provider: "custom_python"
+  provider_path: "target_provider.py"
+  
+  # Tech stack and architecture markers
+  components:
+    - sqlite_database
+    - text_search_index
+    - gemma_llm
+  
+  # Actionable skills and permissions of the application
+  capabilities:
+    - database_lookup
+    - text_retrieval
+  
+  # The system prompt / instructions of the target model
+  system_instructions: |
+    Your task is to answer questions from the course participants
+    based on the provided context.
+    Use the context to find relevant information and provide accurate
+    answers. If the answer is not found in the context,
+    respond with "I don't know."
+
+# Red Teaming Preferences
+red_team_settings:
+  intensity: "medium"
+  focus_areas:
+    - prompt_injection      # Jailbreaks, ignoring instructions
+    - data_leakage          # Exfiltrating FAQ database schemas or hidden keys
+    - toxic_output          # Hate speech, offensive answers
+    - sql_injection         # Attempting to manipulate sqlite query parser if applicable
+  frameworks:
+    - promptfoo
+    - deepteam
+    - pyrit
+    - garak
